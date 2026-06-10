@@ -3,36 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>re-japan-todo｜4モジュール拡張ビュー</title>
+  <title>re-japan-todo｜検証できる課題地図</title>
   <style>
     :root{
-      --bg:#f7f4ee;--panel:#fffaf2;--ink:#26231f;--muted:#6d665d;--line:#ded4c5;--accent:#7a5b32;--accent-soft:#eadcc8;--good:#377a4d;--mid:#a26d17;--warn:#a33a2c;--shadow:0 14px 40px rgba(38,35,31,.10);--radius:20px
+      --bg:#f6f1e8;--paper:#fffaf2;--paper2:#fffdf8;--ink:#25221e;--muted:#71685d;--soft:#efe3d0;--line:#dfd1bf;--accent:#7a5b32;--accent2:#9a7440;--good:#2f7a4a;--mid:#a26716;--warn:#a33a2c;--blue:#315f7c;--shadow:0 18px 50px rgba(37,34,30,.12);--radius:24px
     }
-    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:radial-gradient(circle at top left,rgba(122,91,50,.13),transparent 34%),linear-gradient(180deg,#fbf7ef,var(--bg));color:var(--ink);line-height:1.7}
-    header{max-width:1120px;margin:0 auto;padding:56px 20px 28px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--accent);background:rgba(255,250,242,.72);font-size:13px;font-weight:700}h1{margin:18px 0 12px;font-size:clamp(30px,5vw,56px);line-height:1.08;letter-spacing:-.04em}.lead{max-width:840px;color:var(--muted);font-size:17px}.source-link{color:var(--accent);font-weight:800;text-decoration:none;border-bottom:1px solid var(--accent-soft)}
-    .toolbar{position:sticky;top:0;z-index:10;backdrop-filter:blur(16px);background:rgba(247,244,238,.78);border-block:1px solid rgba(222,212,197,.7)}.toolbar-inner{max-width:1120px;margin:0 auto;padding:14px 20px;display:grid;gap:12px;grid-template-columns:1fr auto;align-items:center}.search{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,250,242,.9);color:var(--ink);font-size:15px;outline:none}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chip{border:1px solid var(--line);background:rgba(255,250,242,.9);color:var(--ink);padding:10px 12px;border-radius:999px;cursor:pointer;font-weight:700}.chip.active{background:var(--ink);color:#fffaf2;border-color:var(--ink)}
-    main{max-width:1120px;margin:0 auto;padding:28px 20px 64px}.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}.legend-card{background:rgba(255,250,242,.78);border:1px solid var(--line);border-radius:16px;padding:14px}.legend-card strong{display:block;margin-bottom:5px;color:var(--accent)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:rgba(255,250,242,.92);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.card-head{padding:20px 20px 14px;display:grid;gap:12px}.category{display:flex;justify-content:space-between;gap:12px;align-items:start}.category h2{margin:0;font-size:22px;line-height:1.3;letter-spacing:-.02em}.meter{min-width:92px;text-align:center;padding:8px 10px;border-radius:999px;font-size:13px;font-weight:800;color:white}.high{background:var(--good)}.middle{background:var(--mid)}.verify{background:var(--warn)}.tasks{color:var(--muted);font-size:14px}.modules{border-top:1px solid var(--line);display:grid}details{border-bottom:1px solid var(--line);background:rgba(255,255,255,.22)}details:last-child{border-bottom:none}summary{list-style:none;cursor:pointer;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-weight:800}summary::-webkit-details-marker{display:none}summary::after{content:"+";display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);flex:0 0 auto}details[open] summary::after{content:"−"}.body{padding:0 20px 18px;color:var(--muted);font-size:14px}.body ul{margin:6px 0 0;padding-left:1.2em}.body li{margin:4px 0}.note{margin-top:28px;padding:18px;border-radius:18px;background:rgba(234,220,200,.55);border:1px solid var(--line);color:var(--muted)}footer{max-width:1120px;margin:0 auto;padding:0 20px 44px;color:var(--muted);font-size:13px}
-    @media(max-width:820px){.toolbar-inner{grid-template-columns:1fr}.chips{justify-content:flex-start}.legend{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:radial-gradient(circle at 10% 0,rgba(154,116,64,.18),transparent 34%),linear-gradient(180deg,#fbf7ee,var(--bg));color:var(--ink);line-height:1.7}.wrap{max-width:1180px;margin:0 auto;padding-inline:20px}
+    header{padding:54px 0 26px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border:1px solid var(--line);border-radius:999px;color:var(--accent);background:rgba(255,250,242,.78);font-size:13px;font-weight:800}h1{margin:18px 0 12px;font-size:clamp(32px,5.2vw,62px);line-height:1.05;letter-spacing:-.055em;max-width:900px}.lead{max-width:880px;color:var(--muted);font-size:17px}.source-link{color:var(--accent);font-weight:900;text-decoration:none;border-bottom:1px solid var(--soft)}
+    .summary-board{display:grid;grid-template-columns:1.2fr .8fr;gap:18px;margin:26px 0 0}.big-panel,.flow-panel{background:rgba(255,250,242,.88);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}.big-panel h2,.flow-panel h2{margin:0 0 10px;font-size:18px}.big-panel p{margin:0;color:var(--muted)}.flow{display:grid;gap:10px}.flow-step{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}.num{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fffaf2;font-size:12px;font-weight:900}.flow-step strong{display:block;line-height:1.3}.flow-step span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
+    .toolbar{position:sticky;top:0;z-index:20;backdrop-filter:blur(18px);background:rgba(246,241,232,.82);border-block:1px solid rgba(223,209,191,.72)}.toolbar-inner{max-width:1180px;margin:0 auto;padding:12px 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}.search{width:100%;padding:13px 15px;border:1px solid var(--line);border-radius:14px;background:rgba(255,250,242,.96);color:var(--ink);font-size:15px;outline:none}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chip{border:1px solid var(--line);background:rgba(255,250,242,.96);color:var(--ink);padding:10px 12px;border-radius:999px;cursor:pointer;font-weight:800}.chip.active{background:var(--ink);color:#fffaf2;border-color:var(--ink)}
+    main{padding:26px 0 64px}.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}.legend-card{background:rgba(255,250,242,.82);border:1px solid var(--line);border-radius:18px;padding:14px}.legend-card strong{display:block;margin-bottom:4px;color:var(--accent)}.legend-card span{color:var(--muted);font-size:13px}.view-hint{display:flex;gap:10px;align-items:center;justify-content:space-between;margin:0 0 16px;color:var(--muted);font-size:14px}.view-hint b{color:var(--ink)}
+    .grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:rgba(255,250,242,.94);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;min-height:390px}.topbar{height:8px}.topbar.high{background:var(--good)}.topbar.middle{background:var(--mid)}.topbar.verify{background:var(--warn)}.card-main{padding:18px 18px 14px;display:grid;gap:14px;flex:1}.card-title{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.card h2{margin:0;font-size:20px;line-height:1.28;letter-spacing:-.02em}.meter{white-space:nowrap;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:900;color:white}.meter.high{background:var(--good)}.meter.middle{background:var(--mid)}.meter.verify{background:var(--warn)}.tasks{color:var(--muted);font-size:13px;min-height:45px}.scan{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{border:1px solid var(--line);background:rgba(255,255,255,.36);border-radius:16px;padding:11px}.mini-label{display:flex;align-items:center;gap:6px;color:var(--accent);font-weight:900;font-size:12px;letter-spacing:.02em}.mini p{margin:6px 0 0;color:var(--ink);font-size:13px;line-height:1.55}.action-strip{border:1px solid rgba(122,91,50,.24);background:rgba(234,220,200,.42);border-radius:16px;padding:12px}.action-strip strong{display:block;color:var(--accent);font-size:12px;margin-bottom:4px}.action-strip p{margin:0;font-size:13px;color:var(--ink)}
+    details{border-top:1px solid var(--line);background:rgba(255,255,255,.20)}summary{list-style:none;cursor:pointer;padding:13px 18px;display:flex;justify-content:space-between;align-items:center;font-weight:900;color:var(--accent)}summary::-webkit-details-marker{display:none}summary::after{content:"詳細";font-size:12px;color:#fffaf2;background:var(--accent);border-radius:999px;padding:4px 9px}details[open] summary::after{content:"閉じる"}.details-body{padding:0 18px 18px;display:grid;gap:12px}.detail-block{border-left:3px solid var(--soft);padding-left:12px}.detail-block b{display:block;color:var(--ink);font-size:13px}.detail-block ul{margin:6px 0 0;padding-left:1.1em;color:var(--muted);font-size:13px}.detail-block li{margin:3px 0}.empty{grid-column:1/-1;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--paper);color:var(--muted)}.note{margin-top:26px;padding:18px;border-radius:20px;background:rgba(234,220,200,.58);border:1px solid var(--line);color:var(--muted)}footer{padding:0 0 44px;color:var(--muted);font-size:13px}
+    @media(max-width:1040px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.summary-board{grid-template-columns:1fr}.legend{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:720px){.toolbar-inner{grid-template-columns:1fr}.chips{justify-content:flex-start}.grid{grid-template-columns:1fr}.legend{grid-template-columns:1fr}.scan{grid-template-columns:1fr}.card{min-height:auto}header{padding-top:38px}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="eyebrow">AI課題地図｜4モジュール拡張ビュー</div>
-    <h1>日本が先送りせず解くべき課題を、検証できるカードにする。</h1>
-    <p class="lead">深津 貴之さんの <a class="source-link" href="https://fladdict.github.io/japan-todo/">日本が先送りせず解くべき課題</a> へのフィードバック用プロトタイプ。AIがまとめた構造課題に、信頼度・根拠・反対論/副作用・次アクションを重ねるための実験UIです。「答え」ではなく、人間が次に確かめるための地図として読む。</p>
+  <header class="wrap">
+    <div class="eyebrow">AI課題地図｜一目で読める検証UI</div>
+    <h1>日本が先送りせず解くべき課題を、ひと目で検証できるカードにする。</h1>
+    <p class="lead">深津 貴之さんの <a class="source-link" href="https://fladdict.github.io/japan-todo/">日本が先送りせず解くべき課題</a> へのフィードバック用プロトタイプ。AIがまとめた構造課題に、信頼度・根拠・反対論/副作用・次アクションを重ねるための実験UIです。</p>
+    <section class="summary-board" aria-label="読み方">
+      <div class="big-panel">
+        <h2>設計の狙い</h2>
+        <p>最初に見るべきものをカード表面に出しました。各カードは、上から「課題名 → 信頼度 → 代表的な根拠 → 代表的な副作用 → 次に検証する問い」の順で視線が流れます。深掘りしたい人だけ詳細を開く設計です。</p>
+      </div>
+      <div class="flow-panel">
+        <h2>視線導線</h2>
+        <div class="flow">
+          <div class="flow-step"><div class="num">1</div><div><strong>色で信頼度を見る</strong><span>緑・橙・赤で優先的に読む場所が分かる。</span></div></div>
+          <div class="flow-step"><div class="num">2</div><div><strong>表面の3要素を見る</strong><span>根拠・副作用・次アクションだけ先に読む。</span></div></div>
+          <div class="flow-step"><div class="num">3</div><div><strong>必要なら詳細を開く</strong><span>全部開かなくても全体像がつかめる。</span></div></div>
+        </div>
+      </div>
+    </section>
   </header>
   <section class="toolbar"><div class="toolbar-inner"><input id="search" class="search" type="search" placeholder="課題名・モジュール内容で検索（例：少子化、空き家、AI、反対論）" /><div class="chips"><button class="chip active" data-filter="all">すべて</button><button class="chip" data-filter="high">高信頼</button><button class="chip" data-filter="middle">中信頼</button><button class="chip" data-filter="verify">要検証</button></div></div></section>
-  <main>
+  <main class="wrap">
     <section class="legend" aria-label="4モジュール説明">
-      <div class="legend-card"><strong>① 信頼度メーター</strong>一次情報・統計・推計・意見の混ざり具合を見える化。</div>
-      <div class="legend-card"><strong>② 根拠・出典レイヤー</strong>官公庁、白書、法令、研究、報道、現場証言を分けて追跡。</div>
-      <div class="legend-card"><strong>③ 反対論・副作用</strong>誰が困るか、どんな歪みが出るかを先に置く。</div>
-      <div class="legend-card"><strong>④ 次アクション</strong>行政・研究者・市民・メディアが次に確認する問いへ接続。</div>
+      <div class="legend-card"><strong>① 信頼度</strong><span>色とラベルで、どこまで確からしいかを先に示す。</span></div>
+      <div class="legend-card"><strong>② 根拠</strong><span>代表ソースを表面に出し、詳細で補足する。</span></div>
+      <div class="legend-card"><strong>③ 副作用</strong><span>政策のきれいごと化を避け、負荷や反発を見せる。</span></div>
+      <div class="legend-card"><strong>④ 次アクション</strong><span>人間が次に何を見ればいいかへ接続する。</span></div>
     </section>
+    <div class="view-hint"><span><b>一覧で読む：</b>カード表面だけで4モジュールの要点が見えます。</span><span id="count"></span></div>
     <section id="grid" class="grid"></section>
-    <div class="note">使い方のイメージ：各カテゴリカードをクリックして開く。検索や信頼度フィルタで絞り込み、現場検証・政策議論・note記事化の入口にする。</div>
+    <div class="note">このUIは、AIの結論をそのまま信じるためではなく、検証の入口をつくるための試作です。街歩き、取材、政策議論、note記事化の起点として使う想定です。</div>
   </main>
-  <footer>Prototype by sirop-d with ChatGPT. This is an independent feedback prototype referencing the original japan-todo project.</footer>
+  <footer class="wrap">Prototype by sirop-d with ChatGPT. This is an independent feedback prototype referencing the original japan-todo project.</footer>
   <script>
     const data=[
       {category:"人口・家族・世代",tasks:"少子化、高齢化、介護、世代間公平、単身化",trust:"high",trustLabel:"高信頼",source:["国勢調査・人口推計","出生動向","介護保険データ","自治体別人口資料"],risk:["子育て支援の財源負担","現役世代への偏り","高齢者支援削減への反発"],action:["保育・住宅・雇用・介護のどこが詰まるか地域別に確認","当事者の生活時間と制度のズレを聞く"]},
@@ -45,10 +64,11 @@
       {category:"民主主義・信頼・共生",tasks:"孤独・孤立、行政透明性、政治参加、人権と多様性",trust:"middle",trustLabel:"中信頼",source:["世論調査","投票率","行政情報公開資料","孤独・孤立調査","人権関連資料"],risk:["透明性強化による行政負担","多様性施策への反発","分断の拡大"],action:["当事者・地域団体・行政窓口の声を集める","制度と生活実感の差を見る"]},
       {category:"外交・安全保障",tasks:"経済安全保障、防衛力、日米同盟、外交力",trust:"verify",trustLabel:"要検証",source:["防衛白書","外交青書","経済安全保障資料","国際機関資料"],risk:["防衛費負担","近隣国との緊張","経済規制による企業負担"],action:["公開情報で追える範囲と専門家判断が必要な範囲を分ける","企業・生活者への波及を別枠で整理"]}
     ];
-    const grid=document.getElementById("grid"),search=document.getElementById("search"),chips=document.querySelectorAll(".chip");let currentFilter="all";
+    const grid=document.getElementById("grid"),search=document.getElementById("search"),chips=document.querySelectorAll(".chip"),count=document.getElementById("count");let currentFilter="all";
     const meterClass=t=>t==="high"?"high":t==="middle"?"middle":"verify";
-    const module=(title,items)=>`<details><summary>${title}</summary><div class="body"><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul></div></details>`;
-    function render(){const q=search.value.trim().toLowerCase();grid.innerHTML="";data.filter(i=>currentFilter==="all"||i.trust===currentFilter).filter(i=>!q||JSON.stringify(i).toLowerCase().includes(q)).forEach(item=>{const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="card-head"><div class="category"><h2>${item.category}</h2><span class="meter ${meterClass(item.trust)}">${item.trustLabel}</span></div><div class="tasks">${item.tasks}</div></div><div class="modules">${module("① 信頼度メーター",[`現在の評価：${item.trustLabel}`,item.trust==="high"?"統計・公的資料で追いやすい項目が多い":item.trust==="middle"?"数値は追えるが、効果や生活実感は追加検証が必要":"技術・外交・制度変化が速く、更新日と前提条件の明示が必要"])}${module("② 根拠・出典レイヤー",item.source)}${module("③ 反対論・副作用レイヤー",item.risk)}${module("④ 次アクション・検証レイヤー",item.action)}</div>`;grid.appendChild(card)});if(!grid.children.length){grid.innerHTML=`<div class="note">該当するカードがありません。検索語やフィルタを変えてみてください。</div>`}}
+    const icon={source:"根拠",risk:"副作用",action:"次の問い"};
+    const detail=(title,items)=>`<div class="detail-block"><b>${title}</b><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul></div>`;
+    function render(){const q=search.value.trim().toLowerCase();grid.innerHTML="";const filtered=data.filter(i=>currentFilter==="all"||i.trust===currentFilter).filter(i=>!q||JSON.stringify(i).toLowerCase().includes(q));count.textContent=`${filtered.length}件表示`;filtered.forEach(item=>{const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="topbar ${meterClass(item.trust)}"></div><div class="card-main"><div class="card-title"><h2>${item.category}</h2><span class="meter ${meterClass(item.trust)}">${item.trustLabel}</span></div><div class="tasks">${item.tasks}</div><div class="scan"><div class="mini"><div class="mini-label">② ${icon.source}</div><p>${item.source[0]}</p></div><div class="mini"><div class="mini-label">③ ${icon.risk}</div><p>${item.risk[0]}</p></div></div><div class="action-strip"><strong>④ 次アクション</strong><p>${item.action[0]}</p></div></div><details><summary>すべての根拠・副作用・検証点を見る</summary><div class="details-body">${detail("① 信頼度メーター",[`現在の評価：${item.trustLabel}`,item.trust==="high"?"統計・公的資料で追いやすい項目が多い":item.trust==="middle"?"数値は追えるが、効果や生活実感は追加検証が必要":"技術・外交・制度変化が速く、更新日と前提条件の明示が必要"])}${detail("② 根拠・出典レイヤー",item.source)}${detail("③ 反対論・副作用レイヤー",item.risk)}${detail("④ 次アクション・検証レイヤー",item.action)}</div></details>`;grid.appendChild(card)});if(!filtered.length){grid.innerHTML=`<div class="empty">該当するカードがありません。検索語やフィルタを変えてみてください。</div>`}}
     search.addEventListener("input",render);chips.forEach(chip=>chip.addEventListener("click",()=>{chips.forEach(c=>c.classList.remove("active"));chip.classList.add("active");currentFilter=chip.dataset.filter;render()}));render();
   </script>
 </body>
