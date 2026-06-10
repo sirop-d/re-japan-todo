@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>re-japan-todo｜次アクション深掘り</title>
+  <style>
+    :root{--bg:#f6f1e8;--paper:#fffaf2;--ink:#25221e;--muted:#71685d;--line:#dfd1bf;--accent:#7a5b32;--soft:#efe3d0;--shadow:0 18px 50px rgba(37,34,30,.12)}
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:linear-gradient(180deg,#fbf7ee,var(--bg));color:var(--ink);line-height:1.75}.wrap{max-width:980px;margin:0 auto;padding:32px 20px 60px}a{color:var(--accent);font-weight:900;text-decoration:none;border-bottom:1px solid var(--soft)}.back{display:inline-flex;margin-bottom:28px}.hero{background:rgba(255,250,242,.92);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);padding:28px}h1{margin:0 0 10px;font-size:clamp(30px,5vw,54px);line-height:1.08;letter-spacing:-.05em}.lead{color:var(--muted);font-size:17px;margin:0}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 11px;background:#fffdf8;font-weight:800;font-size:13px}.grid{display:grid;gap:16px;margin-top:20px}.block{background:rgba(255,250,242,.9);border:1px solid var(--line);border-radius:22px;padding:20px}.block h2{margin:0 0 10px;font-size:20px}.block ul{margin:0;padding-left:1.25em;color:var(--muted)}.block li{margin:7px 0}.prompt{background:rgba(239,227,208,.62);border:1px solid var(--line);border-radius:18px;padding:14px;color:var(--ink)}.empty{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:20px;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <a class="back" href="./">← 課題地図へ戻る</a>
+    <section id="app"></section>
+  </main>
+  <script>
+    const data={
+      population:{title:"人口・家族・世代",summary:"少子化、高齢化、介護、世代間公平、単身化を、生活圏の詰まりとして確認する。",trust:"検証しやすい",sources:["国勢調査・人口推計","出生動向","介護保険データ","自治体別人口資料"],questions:["保育・住宅・雇用・介護のどこが地域ごとに詰まっているか？","当事者の生活時間と制度設計は噛み合っているか？","単身高齢者と子育て世帯で、必要な支援はどう違うか？"],field:["駅前・住宅地・保育施設周辺を歩き、生活導線を観察する","自治体の人口推計と現場の空き家・商店街・病院距離を見比べる"],output:["地域別の詰まりポイント地図","生活者インタビューの問いリスト","制度と生活実感のズレまとめ"]},
+      work:{title:"人的資本・働き方・教育",summary:"賃金、教育、学び直しを、個人の努力論に閉じず、制度と現場の接続で見る。",trust:"追加検証が必要",sources:["労働統計","賃金統計","学校基本調査","企業調査"],questions:["リスキリングは本当に使える制度になっているか？","教育投資の地域差はどこで広がっているか？","賃金停滞はどの業種・年齢層に強く出ているか？"],field:["職業訓練、求人、地域企業の募集条件を比較する","学校・図書館・学習拠点のアクセスを歩いて確認する"],output:["学び直し導線マップ","求人票から見たスキル需要メモ","制度が届いていない層の仮説"]},
+      fiscal:{title:"財政・社会保障・行政",summary:"給付と負担、行政効率化を、数字だけでなく説明可能性として見る。",trust:"検証しやすい",sources:["予算・決算資料","社会保障給付費","税制資料","行政レビュー"],questions:["どの制度が重複し、どこに負担が偏っているか？","給付削減や増税に対する合理的な不安は何か？","行政DXで取り残される人は誰か？"],field:["自治体サイトで手続き導線を実際にたどる","窓口・オンライン手続きの分かりやすさを比較する"],output:["制度の重複メモ","手続き導線レビュー","負担と受益の説明不足リスト"]},
+      region:{title:"地域・都市・インフラ",summary:"インフラ老朽化、空き家、公共交通を、数字と生活感のズレとして歩いて見る。",trust:"追加検証が必要",sources:["自治体統計","空き家調査","道路・橋梁・上下水道データ","公共交通データ"],questions:["維持すべきものと畳むものの基準は見えているか？","公共交通が弱い場所で生活はどう成立しているか？","空き家や商店街の変化は統計と一致しているか？"],field:["駅前、バス停、商店街、住宅地を歩いて観察する","時刻表、空き店舗、歩道、照明、ベンチを記録する"],output:["街歩き観察ノート","公共交通の使いづらさ地図","数字と現場のズレ写真メモ"]},
+      industry:{title:"産業・企業・経済成長",summary:"産業競争力を、企業数や投資額だけでなく、地域の承継・人材・販路で見る。",trust:"追加検証が必要",sources:["経産省資料","企業統計","特許","開業率・廃業率","資金調達データ"],questions:["地域産業は承継・人材・資金・販路のどこで詰まるか？","スタートアップ支援は地域経済に接続しているか？","中小企業の淘汰と再生の線引きはどこか？"],field:["地場産業の店舗・工場・商店街を観察する","求人・後継者募集・空きテナントを確認する"],output:["地域産業の詰まりメモ","承継課題の仮説","生活者から見た産業変化レポート"]},
+      environment:{title:"環境・エネルギー・防災",summary:"防災、電力、食料を、生活圏の弱点として地図化する。",trust:"検証しやすい",sources:["気象庁資料","防災白書","エネルギー統計","農業統計","温室効果ガス資料"],questions:["避難・水害・電力・食料のどこが地域の弱点か？","防災投資の優先順位は生活者に伝わっているか？","再エネや電気料金の負担は誰に強く出るか？"],field:["ハザードマップと実際の道、川、避難所を照合する","避難導線を歩いて、夜間や高齢者目線で見る"],output:["生活圏の脆弱点地図","避難導線チェックリスト","防災と日常生活のズレまとめ"]},
+      digital:{title:"デジタル・AI・情報空間",summary:"AI、サイバー、偽情報を、便利さ・安全・自由の境界として見る。",trust:"変化が速い",sources:["サイバー被害統計","AI政策文書","行政DX資料","透明性レポート"],questions:["便利さ・安全・自由の線引きはどこに置くべきか？","AI規制で守られるものと失われるものは何か？","デジタル弱者はどの手続きで困るか？"],field:["行政手続きや公共サービスのデジタル導線を試す","高齢者・初心者目線で画面や用語の難しさを確認する"],output:["AI/行政DXの利用者目線レビュー","便利さと監視の論点整理","更新履歴つき制度メモ"]},
+      democracy:{title:"民主主義・信頼・共生",summary:"孤独、政治参加、行政透明性を、制度と生活実感の距離で見る。",trust:"追加検証が必要",sources:["世論調査","投票率","行政情報公開資料","孤独・孤立調査","人権関連資料"],questions:["制度はあるのに届いていない人はどこにいるか？","透明性強化は行政負担とどう両立するか？","多様性施策への反発にはどんな不安があるか？"],field:["地域団体、図書館、公民館、相談窓口の導線を見る","孤立しやすい場所とつながりが生まれる場所を観察する"],output:["地域の接点マップ","制度と生活実感のズレメモ","参加しやすさのチェックリスト"]},
+      security:{title:"外交・安全保障",summary:"公開情報で追える範囲と専門家判断が必要な範囲を分けて見る。",trust:"変化が速い",sources:["防衛白書","外交青書","経済安全保障資料","国際機関資料"],questions:["公開情報だけでどこまで判断できるか？","防衛費や経済規制の生活者への波及は何か？","企業活動と安全保障の境界はどう変わっているか？"],field:["公開資料と報道の差を比較する","地域企業・物流・インフラへの影響を仮説化する"],output:["公開情報ベースの論点表","専門家確認が必要な問いリスト","生活者への波及メモ"]}
+    };
+    const id=new URLSearchParams(location.search).get("topic")||"region";const item=data[id];const app=document.getElementById("app");
+    function list(arr){return `<ul>${arr.map(x=>`<li>${x}</li>`).join("")}</ul>`}
+    if(!item){app.innerHTML=`<div class="empty">該当する深掘りページがありません。<br><a href="./">課題地図へ戻る</a></div>`}else{document.title=`${item.title}｜次アクション深掘り`;app.innerHTML=`<section class="hero"><h1>${item.title}</h1><p class="lead">${item.summary}</p><div class="meta"><span class="pill">検証性：${item.trust}</span><span class="pill">次アクション深掘り</span></div></section><section class="grid"><div class="block"><h2>まず見る根拠</h2>${list(item.sources)}</div><div class="block"><h2>検証したい問い</h2>${list(item.questions)}</div><div class="block"><h2>フィールドワーク案</h2>${list(item.field)}</div><div class="block"><h2>アウトプット案</h2>${list(item.output)}</div><div class="block"><h2>チャッピーへの次プロンプト</h2><div class="prompt">「${item.title}」について、上の問いをもとに、現地観察・統計確認・note化の3段階で調査計画を作って。</div></div></section>`}
+  </script>
+</body>
+</html>
