@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>re-japan-todo｜4モジュール拡張ビュー</title>
+  <style>
+    :root{
+      --bg:#f7f4ee;--panel:#fffaf2;--ink:#26231f;--muted:#6d665d;--line:#ded4c5;--accent:#7a5b32;--accent-soft:#eadcc8;--good:#377a4d;--mid:#a26d17;--warn:#a33a2c;--shadow:0 14px 40px rgba(38,35,31,.10);--radius:20px
+    }
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",Meiryo,sans-serif;background:radial-gradient(circle at top left,rgba(122,91,50,.13),transparent 34%),linear-gradient(180deg,#fbf7ef,var(--bg));color:var(--ink);line-height:1.7}
+    header{max-width:1120px;margin:0 auto;padding:56px 20px 28px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 12px;border:1px solid var(--line);border-radius:999px;color:var(--accent);background:rgba(255,250,242,.72);font-size:13px;font-weight:700}h1{margin:18px 0 12px;font-size:clamp(30px,5vw,56px);line-height:1.08;letter-spacing:-.04em}.lead{max-width:840px;color:var(--muted);font-size:17px}.source-link{color:var(--accent);font-weight:800;text-decoration:none;border-bottom:1px solid var(--accent-soft)}
+    .toolbar{position:sticky;top:0;z-index:10;backdrop-filter:blur(16px);background:rgba(247,244,238,.78);border-block:1px solid rgba(222,212,197,.7)}.toolbar-inner{max-width:1120px;margin:0 auto;padding:14px 20px;display:grid;gap:12px;grid-template-columns:1fr auto;align-items:center}.search{width:100%;padding:13px 14px;border:1px solid var(--line);border-radius:14px;background:rgba(255,250,242,.9);color:var(--ink);font-size:15px;outline:none}.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.chip{border:1px solid var(--line);background:rgba(255,250,242,.9);color:var(--ink);padding:10px 12px;border-radius:999px;cursor:pointer;font-weight:700}.chip.active{background:var(--ink);color:#fffaf2;border-color:var(--ink)}
+    main{max-width:1120px;margin:0 auto;padding:28px 20px 64px}.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:22px}.legend-card{background:rgba(255,250,242,.78);border:1px solid var(--line);border-radius:16px;padding:14px}.legend-card strong{display:block;margin-bottom:5px;color:var(--accent)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:rgba(255,250,242,.92);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.card-head{padding:20px 20px 14px;display:grid;gap:12px}.category{display:flex;justify-content:space-between;gap:12px;align-items:start}.category h2{margin:0;font-size:22px;line-height:1.3;letter-spacing:-.02em}.meter{min-width:92px;text-align:center;padding:8px 10px;border-radius:999px;font-size:13px;font-weight:800;color:white}.high{background:var(--good)}.middle{background:var(--mid)}.verify{background:var(--warn)}.tasks{color:var(--muted);font-size:14px}.modules{border-top:1px solid var(--line);display:grid}details{border-bottom:1px solid var(--line);background:rgba(255,255,255,.22)}details:last-child{border-bottom:none}summary{list-style:none;cursor:pointer;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-weight:800}summary::-webkit-details-marker{display:none}summary::after{content:"+";display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);flex:0 0 auto}details[open] summary::after{content:"−"}.body{padding:0 20px 18px;color:var(--muted);font-size:14px}.body ul{margin:6px 0 0;padding-left:1.2em}.body li{margin:4px 0}.note{margin-top:28px;padding:18px;border-radius:18px;background:rgba(234,220,200,.55);border:1px solid var(--line);color:var(--muted)}footer{max-width:1120px;margin:0 auto;padding:0 20px 44px;color:var(--muted);font-size:13px}
+    @media(max-width:820px){.toolbar-inner{grid-template-columns:1fr}.chips{justify-content:flex-start}.legend{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">AI課題地図｜4モジュール拡張ビュー</div>
+    <h1>日本が先送りせず解くべき課題を、検証できるカードにする。</h1>
+    <p class="lead">深津 貴之さんの <a class="source-link" href="https://fladdict.github.io/japan-todo/">日本が先送りせず解くべき課題</a> へのフィードバック用プロトタイプ。AIがまとめた構造課題に、信頼度・根拠・反対論/副作用・次アクションを重ねるための実験UIです。「答え」ではなく、人間が次に確かめるための地図として読む。</p>
+  </header>
+  <section class="toolbar"><div class="toolbar-inner"><input id="search" class="search" type="search" placeholder="課題名・モジュール内容で検索（例：少子化、空き家、AI、反対論）" /><div class="chips"><button class="chip active" data-filter="all">すべて</button><button class="chip" data-filter="high">高信頼</button><button class="chip" data-filter="middle">中信頼</button><button class="chip" data-filter="verify">要検証</button></div></div></section>
+  <main>
+    <section class="legend" aria-label="4モジュール説明">
+      <div class="legend-card"><strong>① 信頼度メーター</strong>一次情報・統計・推計・意見の混ざり具合を見える化。</div>
+      <div class="legend-card"><strong>② 根拠・出典レイヤー</strong>官公庁、白書、法令、研究、報道、現場証言を分けて追跡。</div>
+      <div class="legend-card"><strong>③ 反対論・副作用</strong>誰が困るか、どんな歪みが出るかを先に置く。</div>
+      <div class="legend-card"><strong>④ 次アクション</strong>行政・研究者・市民・メディアが次に確認する問いへ接続。</div>
+    </section>
+    <section id="grid" class="grid"></section>
+    <div class="note">使い方のイメージ：各カテゴリカードをクリックして開く。検索や信頼度フィルタで絞り込み、現場検証・政策議論・note記事化の入口にする。</div>
+  </main>
+  <footer>Prototype by sirop-d with ChatGPT. This is an independent feedback prototype referencing the original japan-todo project.</footer>
+  <script>
+    const data=[
+      {category:"人口・家族・世代",tasks:"少子化、高齢化、介護、世代間公平、単身化",trust:"high",trustLabel:"高信頼",source:["国勢調査・人口推計","出生動向","介護保険データ","自治体別人口資料"],risk:["子育て支援の財源負担","現役世代への偏り","高齢者支援削減への反発"],action:["保育・住宅・雇用・介護のどこが詰まるか地域別に確認","当事者の生活時間と制度のズレを聞く"]},
+      {category:"人的資本・働き方・教育",tasks:"賃金停滞、生産性、教育格差、リスキリング、包摂的労働市場",trust:"middle",trustLabel:"中信頼",source:["労働統計","賃金統計","学校基本調査","企業調査"],risk:["リスキリングの自己責任化","教育投資の地域差","企業側の負担増"],action:["学校・企業・職業訓練で制度が実際に使えるか確認","若年層と中高年層で必要な支援を分ける"]},
+      {category:"財政・社会保障・行政",tasks:"社会保障と財政、税制と再分配、行政効率化、政策評価",trust:"high",trustLabel:"高信頼",source:["予算・決算資料","社会保障給付費","税制資料","行政レビュー"],risk:["増税反発","給付削減への不安","行政DXによる取り残され層"],action:["重複制度・非効率・負担の偏りを点検","給付と負担の説明可能性を検証"]},
+      {category:"地域・都市・インフラ",tasks:"インフラ老朽化、地方流出、東京一極集中、空き家、公共交通",trust:"middle",trustLabel:"中信頼",source:["自治体統計","空き家調査","道路・橋梁・上下水道データ","公共交通データ"],risk:["コンパクトシティへの反発","路線・施設廃止への不満","地域間格差の拡大"],action:["駅前・バス停・商店街・住宅地を歩いて数字と生活感のズレを確認","維持すべきものと畳むものの基準を可視化"]},
+      {category:"産業・企業・経済成長",tasks:"産業競争力、中小企業承継、スタートアップ、企業統治",trust:"middle",trustLabel:"中信頼",source:["経産省資料","企業統計","特許","開業率・廃業率","資金調達データ"],risk:["中小企業淘汰への反発","大企業優遇批判","スタートアップ偏重"],action:["地域産業ごとに承継・人材・資金・販路の詰まりを確認","成長政策と生活者の実感の距離を見る"]},
+      {category:"環境・エネルギー・防災",tasks:"防災、気候変動適応、エネルギー安全保障、脱炭素、食料安全保障",trust:"high",trustLabel:"高信頼",source:["気象庁資料","防災白書","エネルギー統計","農業統計","温室効果ガス資料"],risk:["電気料金上昇","再エネ立地反対","農業負担","防災投資の財源問題"],action:["自治体別に避難・水害・電力・食料の脆弱点を地図化","生活圏単位で避難導線を歩いて確認"]},
+      {category:"デジタル・AI・情報空間",tasks:"サイバー、AIガバナンス、偽情報、行政・社会DX",trust:"verify",trustLabel:"要検証",source:["サイバー被害統計","AI政策文書","行政DX資料","透明性レポート"],risk:["監視社会化","表現の自由との衝突","AI規制による産業停滞","デジタル弱者"],action:["便利さ・安全・自由の境界を利用者視点で検証","更新日と制度変更履歴を必ず表示"]},
+      {category:"民主主義・信頼・共生",tasks:"孤独・孤立、行政透明性、政治参加、人権と多様性",trust:"middle",trustLabel:"中信頼",source:["世論調査","投票率","行政情報公開資料","孤独・孤立調査","人権関連資料"],risk:["透明性強化による行政負担","多様性施策への反発","分断の拡大"],action:["当事者・地域団体・行政窓口の声を集める","制度と生活実感の差を見る"]},
+      {category:"外交・安全保障",tasks:"経済安全保障、防衛力、日米同盟、外交力",trust:"verify",trustLabel:"要検証",source:["防衛白書","外交青書","経済安全保障資料","国際機関資料"],risk:["防衛費負担","近隣国との緊張","経済規制による企業負担"],action:["公開情報で追える範囲と専門家判断が必要な範囲を分ける","企業・生活者への波及を別枠で整理"]}
+    ];
+    const grid=document.getElementById("grid"),search=document.getElementById("search"),chips=document.querySelectorAll(".chip");let currentFilter="all";
+    const meterClass=t=>t==="high"?"high":t==="middle"?"middle":"verify";
+    const module=(title,items)=>`<details><summary>${title}</summary><div class="body"><ul>${items.map(i=>`<li>${i}</li>`).join("")}</ul></div></details>`;
+    function render(){const q=search.value.trim().toLowerCase();grid.innerHTML="";data.filter(i=>currentFilter==="all"||i.trust===currentFilter).filter(i=>!q||JSON.stringify(i).toLowerCase().includes(q)).forEach(item=>{const card=document.createElement("article");card.className="card";card.innerHTML=`<div class="card-head"><div class="category"><h2>${item.category}</h2><span class="meter ${meterClass(item.trust)}">${item.trustLabel}</span></div><div class="tasks">${item.tasks}</div></div><div class="modules">${module("① 信頼度メーター",[`現在の評価：${item.trustLabel}`,item.trust==="high"?"統計・公的資料で追いやすい項目が多い":item.trust==="middle"?"数値は追えるが、効果や生活実感は追加検証が必要":"技術・外交・制度変化が速く、更新日と前提条件の明示が必要"])}${module("② 根拠・出典レイヤー",item.source)}${module("③ 反対論・副作用レイヤー",item.risk)}${module("④ 次アクション・検証レイヤー",item.action)}</div>`;grid.appendChild(card)});if(!grid.children.length){grid.innerHTML=`<div class="note">該当するカードがありません。検索語やフィルタを変えてみてください。</div>`}}
+    search.addEventListener("input",render);chips.forEach(chip=>chip.addEventListener("click",()=>{chips.forEach(c=>c.classList.remove("active"));chip.classList.add("active");currentFilter=chip.dataset.filter;render()}));render();
+  </script>
+</body>
+</html>
